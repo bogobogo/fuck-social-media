@@ -1,0 +1,21 @@
+<html>
+  <head>
+    <title>Submit a form</title>
+   <link rel="stylesheet" type="text/css" href="/static/style.css">
+  </head>
+  <body>
+    <div id="container">
+      <div class="pagetitle">
+        
+        <ul>
+        {% for tweet in emaildata %}
+        <li>{{tweet.username}} : {{tweet.tweet}} </li>
+        {% endfor %}
+        </ul>
+        
+      </div>
+      <div id="main">
+      </div>
+    </div>
+  </body>
+</html>
