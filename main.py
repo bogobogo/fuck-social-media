@@ -46,11 +46,8 @@ def send_mail():
         mail.send_mail(sender='Your daily elad tweets! <noreply@fuck-social-media.appspotmail.com>',
                to="bogo elad <bogomolnyelad@gmail.com>",
                subject = "Here is what people you care about shared",
-	           body="""Dear NIV:
-               works just need to add hebrew support
-               I am free to talk now
-               daw
-               The legati Team
+	           body="""you should
+	           use an email client that can render html dude
                """,
               html="<head> <meta charset='utf-8' /> </head>" + ms ) 
         
