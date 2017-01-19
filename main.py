@@ -8,7 +8,7 @@ import requests
 from bs4 import BeautifulSoup
 import feedparser
 import datetime
-from time import mktime
+from time import mktime, sleep
 
 app = Flask(__name__)
 
@@ -20,27 +20,32 @@ def hello():
 @app.route('/mail', methods=['GET'])
 def send_mail():
 	if request.method == 'GET':
-		following = ['paulg', 'NadavEyalDesk','sama', 'rabovitz', 'naval', 'nntaleb', 'tul', 'shapiro', 'cpojer', 'chamath', 'patrickc', 'collision']
+		following = ['paulg', 'NadavEyalDesk','browniefed','RavivDrucker','sama', 'rabovitz', 'jasonfried', 'naval', 'realDonaldTrump', 'nntaleb', 'tul', 'dhh', 'shapiro',
+					 'cpojer', 'chamath', 'patrickc', 'collision', 'gilamran', 'intelligibabble', 'grabbou', 'ccheever', 'guyeldar', 'ilyasu', 'DanielPink', 'OpenAI',
+					 'waitbutwhy', 'ScottHYoung', 'bencasnocha', 'koltal', 'paultoo', 'Harjeet', 'yuris', 'ilikevests', 'getexponent', 'WixEng', 'amirtibon', 'notbrent', 'olivercameron', 'elonmusk', 'amsterdamski2']
 		emaildata = []
 		for name in following:
+			sleep(0.3)
 			page = feedparser.parse('http://twitrss.me/twitter_user_to_rss/?user=' + name)
-			username = page['feed']['title'].split()[-1]
-			for i in page.entries:
-				emaildata.append({ 'username' : username, 'tweet' : i.title, 'date': i.published_parsed})
-
+			if page.bozo:
+				logging.info('problem with name' + name)
+				logging.info(page)		
+			else:
+				username = page['feed']['title'].split()[-1]
+				for i in page.entries:
+					emaildata.append({ 'username' : username, 'tweet' : i.title, 'date': i.published_parsed})
+				
 			
 		emaildata.sort(key=lambda item:item['date'], reverse=True)
-		logging.info(emaildata)
 		yesterday = datetime.datetime.now() - datetime.timedelta(days=1)
-		logging.info(yesterday)
 		dataFiltered = [i for i in emaildata if datetime.datetime.fromtimestamp(mktime(i['date'])) > yesterday]
 		logging.info(dataFiltered)
 
 		logging.info('1')
         ms = render_template('tweets_email.html', emaildata = dataFiltered)
-        mail.send_mail(sender='Your daily tweets! <noreply@fuck-social-media.appspotmail.com>',
+        mail.send_mail(sender='Your daily elad tweets! <noreply@fuck-social-media.appspotmail.com>',
                to="bogo elad <bogomolnyelad@gmail.com>",
-	           subject="You were invited to join a notebook!",
+               subject = "Here is what people you care about shared",
 	           body="""Dear NIV:
                works just need to add hebrew support
                I am free to talk now

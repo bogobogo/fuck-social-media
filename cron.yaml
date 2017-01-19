@@ -1,4 +1,4 @@
 cron:
 - description: daily summary job
   url: /mail
-  schedule: every day 14:00
+  schedule: every day 18:00
