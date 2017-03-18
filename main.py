@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*-
 
 import logging
+
+from google.appengine.ext import ndb
 from google.appengine.api import mail
 from flask import Flask, render_template, request, jsonify
 import requests
@@ -12,6 +14,11 @@ from time import mktime, sleep
 
 app = Flask(__name__)
 
+class User(ndb.Model):
+    email = ndb.StringProperty()
+    password = ndb.StringProperty()
+    following = ndb.StringProperty(repeated=True)
+
 
 @app.route('/')
 def hello():
@@ -20,13 +27,13 @@ def hello():
 @app.route('/mail', methods=['GET'])
 def send_mail():
 	if request.method == 'GET':
-		following = ['paulg', 'NadavEyalDesk','browniefed','RavivDrucker','sama', 'rabovitz', 'jasonfried', 'naval', 'realDonaldTrump', 'nntaleb', 'tul', 'dhh', 'shapiro',
+		following = ['paulg', 'NadavEyalDesk','POTUS','browniefed','RavivDrucker','sama', 'rabovitz', 'jasonfried', 'naval', 'realDonaldTrump', 'nntaleb', 'tul', 'dhh', 'shapiro',
 					 'cpojer', 'chamath', 'patrickc', 'collision', 'gilamran', 'intelligibabble', 'grabbou', 'ccheever', 'guyeldar', 'ilyasu', 'DanielPink', 'OpenAI',
-					 'waitbutwhy', 'ScottHYoung', 'bencasnocha', 'koltal', 'paultoo', 'Harjeet', 'yuris', 'ilikevests', 'getexponent', 'WixEng', 'amirtibon', 'notbrent', 'olivercameron', 'elonmusk', 'amsterdamski2']
+					 'waitbutwhy', 'ScottHYoung', 'sknthla', 'bencasnocha', 'koltal', 'paultoo', 'Harjeet', 'yuris', 'ilikevests', 'dan_abramov','getexponent', 'WixEng', 'amirtibon', 'notbrent', 'olivercameron', 'elonmusk', 'amsterdamski2']
 		emaildata = []
 		for name in following:
 			sleep(0.3)
-			page = feedparser.parse('http://twitrss.me/twitter_user_to_rss/?user=' + name)
+			page = feedparser.parse('http://twitrss.me/twitter_user_to_rss/?user=' + name + "&replies=on")
 			if page.bozo:
 				logging.info('problem with name' + name)
 				logging.info(page)		
